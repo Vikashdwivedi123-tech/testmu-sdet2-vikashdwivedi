@@ -59,3 +59,4 @@ src
 - Validate through UI
 
 Allure report screenshot - ![](/Users/dwivedi/Downloads/Allure Report.html)
+![img.png](img.png)
