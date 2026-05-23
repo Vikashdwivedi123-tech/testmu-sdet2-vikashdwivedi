@@ -57,3 +57,5 @@ src
 ### Integration
 - Create data using API
 - Validate through UI
+
+Allure report screenshot - ![](/Users/dwivedi/Downloads/Allure Report.html)
