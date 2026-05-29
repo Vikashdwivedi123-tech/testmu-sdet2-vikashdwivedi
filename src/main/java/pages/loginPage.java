@@ -2,50 +2,65 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import utils.waitUtils;
+import org.openqa.selenium.WebElement;
 
-import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class loginPage {
+    WebDriver driver;
 
-    private WebDriver driver;
-
-    // Constructor
-    public loginPage(WebDriver driver) {
-        this.driver = driver;
-        this.waitUtils = new waitUtils(driver);
-
+    public loginPage(WebDriver driver){
+        this.driver=driver;
     }
 
-    // Locators
-    private By username = By.xpath("//input[@name='username']");
-    private By password = By.xpath("//input[@name='password']");
-    private By loginBtn = By.xpath("//button[@type='submit']");
+    By addButton = By.id("addNewRecordButton");
 
+    By searchBox = By.id("APjFqb");
 
+    By registration = By.id("registration-form-modal");
 
-    private waitUtils waitUtils;
+    By pageText = By.xpath("//strong[normalize-space()='1 of 1']");
 
-    // Actions
-    public void enterUsername(String user) {
-        waitUtils.waitForVisibility(username).sendKeys(user);
+    By firstRow = By.xpath("//tbody/tr[1]/td");
+
+    public void clickOnAdd(){
+        driver.findElement(addButton).click();
     }
 
-    public void enterPassword(String pass) {
-        waitUtils.waitForVisibility(password).sendKeys(pass);
+    public boolean isHeadingVisible(){
+        return driver.findElement(registration).isDisplayed();
     }
 
-    public void clickLoginBtn() {
-        driver.findElement(loginBtn).click();
+    public void enterSearch(String text) {
+        driver.findElement(searchBox).sendKeys(text);
     }
 
-    // Business method (VERY IMPORTANT for interviews)
-    public void login(String user, String pass) {
-        enterUsername(user);
-        enterPassword(pass);
-        clickLoginBtn();
+    public String getTitle(){
+        String actual = driver.getTitle();
+        return actual;
+    }
+
+    public boolean verifyPageText(){
+        return driver.findElement(pageText).isDisplayed();
+    }
+
+    public String fetchFirstRowText(){
+        String text = driver.findElement(firstRow).getText();
+        return text;
+    }
+
+    public List<String> getFirstRowData(){
+        List<WebElement> cells = driver.findElements(firstRow);
+        List<String> actualData = new ArrayList<>();
+        for(WebElement cell : cells) {
+            String text = cell.getText().trim();
+
+            if (!text.isEmpty()) {
+                actualData.add(text);
+            }
+
+        }
+        return actualData;
     }
 }

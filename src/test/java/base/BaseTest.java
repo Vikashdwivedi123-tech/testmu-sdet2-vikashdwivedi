@@ -1,26 +1,36 @@
 package base;
 
-import io.qameta.allure.testng.AllureTestNg;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
 
-@Listeners({AllureTestNg.class})
 public class BaseTest {
 
-    protected WebDriver driver;
+    public WebDriver driver;
 
     @BeforeMethod
     public void setup() {
-        DriverFactory.initDriver();
-        driver = DriverFactory.getDriver();
 
-        driver.get(configReader.get("baseUrl"));
+        WebDriverManager.chromedriver().setup();
+
+        ChromeOptions options = new ChromeOptions();
+
+        options.addArguments("--headless=new");
+
+        driver = new ChromeDriver(options);
+
+        driver.manage().window().maximize();
+
+        driver.get("https://demoqa.com/webtables");
     }
 
     @AfterMethod
     public void tearDown() {
-        DriverFactory.quitDriver();
+        if(driver != null) {
+            driver.quit();
+        }
     }
 }
